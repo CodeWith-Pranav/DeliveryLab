@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DeliveryLab — Make failure predictable</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <aside>
+      <a class="brand" href="/"
+        >◈ DeliveryLab<span>WEBHOOK RELIABILITY SANDBOX</span></a
+      >
+      <p class="muted">WORKSPACE</p>
+      <button class="nav active" data-view="overview">
+        ◉ Delivery overview</button
+      ><button class="nav" data-view="attempts">↗ Attempt explorer</button
+      ><button class="nav" data-view="receiver">⌘ Receiver effects</button
+      ><button class="nav" data-view="dead">⊞ Dead-letter queue</button>
+      <div class="aside-bottom">
+        <strong>Break it. Understand it.</strong>
+        <p>
+          A virtual clock, a controlled receiver, and evidence for every retry.
+        </p>
+        <button id="help">How it works ↗</button>
+      </div>
+    </aside>
+    <main>
+      <header>
+        <span>Workspace / <b id="crumb">Delivery overview</b></span
+        ><span class="pill">● Virtual clock · No external traffic</span>
+      </header>
+      <section class="title">
+        <div>
+          <small>FAILURE IS PART OF THE PROTOCOL.</small>
+          <h1>Deliver with <em>confidence.</em></h1>
+          <p>
+            Explore retries, lost acknowledgements and the difference between
+            delivery and processing.
+          </p>
+        </div>
+        <button id="export" class="secondary">Export JSON ↓</button>
+      </section>
+      <section class="panel controls">
+        <div>
+          <h2>Configure an experiment</h2>
+          <p>Same seed. Same sequence. Reproducible results.</p>
+        </div>
+        <form id="config">
+          <label
+            >Receiver scenario<select id="scenario">
+              <option value="transient">
+                Transient outage · 503 → recovery
+              </option>
+              <option value="healthy">Healthy · immediate success</option>
+              <option value="permanent">Permanent failure · 400</option>
+              <option value="rate-limit">
+                Rate limited · 429 + Retry-After
+              </option>
+              <option value="lost-ack">
+                Lost acknowledgement · duplicate risk
+              </option>
+            </select></label
+          ><label
+            >Events<input
+              id="events"
+              type="number"
+              min="1"
+              max="30"
+              value="6"
+              required /></label
+          ><label
+            >Max attempts<input
+              id="maxAttempts"
+              type="number"
+              min="1"
+              max="8"
+              value="4"
+              required /></label
+          ><label
+            >Base delay (ms)<input
+              id="baseDelay"
+              type="number"
+              min="100"
+              max="60000"
+              value="1000"
+              required /></label
+          ><label
+            >Random seed<input
+              id="seed"
+              type="number"
+              min="0"
+              max="2147483647"
+              value="42"
+              required /></label
+          ><label class="check"
+            ><input id="dedupe" type="checkbox" checked />Receiver
+            deduplication</label
+          ><button class="primary" id="run">Run experiment →</button>
+        </form>
+        <p id="error" role="alert"></p>
+      </section>
+      <div id="result" aria-live="polite"></div>
+      <footer>
+        DeliveryLab v1.0 · Deterministic discrete-event simulation · Your
+        experiment stays in this browser
+      </footer>
+    </main>
+    <dialog id="guide">
+      <h2>What happens when delivery fails?</h2>
+      <p>
+        The backend schedules events against a virtual clock. Transient errors
+        and timeouts retry with exponential backoff and seeded jitter. A 429
+        uses a simulated 3-second Retry-After. Other 4xx responses go directly
+        to the dead-letter queue.
+      </p>
+      <p>
+        A timeout can happen after the receiver already committed its side
+        effect. Retry then causes duplicate processing unless the receiver
+        remembers the event ID. DeliveryLab models that distinction explicitly.
+      </p>
+      <p>
+        Redrive reruns the experiment with a recovery phase: dead letters get
+        one successful attempt after the receiver is repaired. This is an
+        educational simulator, not a background delivery service. No external
+        requests or production database transactions are performed.
+      </p>
+      <button id="close-help" class="primary">Got it</button>
+    </dialog>
+  </body>
+</html>
