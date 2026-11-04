@@ -20,4 +20,4 @@ Production: https://deliverylab-three.vercel.app/.
 
 ## Limits
 
-These are correctness checks for a small deterministic simulator, not a penetration test or load test. No external webhook, durable queue, production receiver, multi-user account isolation or distributed transaction is implemented. GitHub CI is included as configuration and has not run until the repository is created and uploaded.
+These are correctness checks for a small deterministic simulator, not a penetration test or load test. No external webhook, durable queue, production receiver, multi-user account isolation or distributed transaction is implemented. All 18 uploaded source files were byte-matched against the local implementation, and the tests passed again from a fresh public clone. GitHub Actions Tests passed on commit 4da3592. Vercel Git integration is connected.

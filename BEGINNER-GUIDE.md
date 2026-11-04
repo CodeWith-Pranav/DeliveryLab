@@ -68,7 +68,7 @@ To add a scenario, update the select options, the engine's allowed scenarios and
 
 ## GitHub and deployment
 
-GitHub stores source and real commit history. Vercel hosts the running app. The current deployment was uploaded directly; it does not yet auto-deploy on GitHub changes. After repository creation, upload this source, verify the Actions test run, and link the existing Vercel project to the repository to enable Git-driven deployments. Do not create another Vercel project just to link Git. Keep future commits honest and descriptive; do not invent past dates or development history.
+GitHub stores source and real commit history. Vercel hosts the running app. The public source is at https://github.com/CodeWith-Pranav/DeliveryLab. The existing Vercel project is connected to it; pushes to main trigger production deployments and GitHub Actions runs the tests. Check both Actions and Vercel after changes. Keep future commits honest and descriptive; do not invent past dates or development history.
 
 ## Good next learning change
 
